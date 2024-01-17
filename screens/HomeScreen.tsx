@@ -1,19 +1,48 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import { FC } from "react";
-import { Button, Text, View } from "react-native";
+import React, { FC } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import CitySearch from "../components/CitySearch";
+import CityTile from "../components/CityTile";
 import { RootStackParamList } from "../types";
 
 type HomeScreenProps = StackScreenProps<RootStackParamList, "Home">;
 
 const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
+  const locations = ["Kondotty", "New Delhi", "London"];
+  const degrees = ["12°", " 19°", "2°"];
+
   return (
-    <View>
-      <Text>Home!</Text>
-      <Button onPress={() => navigation.push("City", {
-        cityId: '123'
-      })} title="Open City" />
+    <View style={style.container}>
+      <CitySearch />
+      <Text style={style.locationTitle}>My Location</Text>
+
+      {locations.map((location, index) => (
+        <CityTile
+          key={index}
+          city={location}
+          degree={degrees[index]}
+          onPress={() =>
+            navigation.push("City", {
+              cityName: location,
+              cityTemperature: degrees[index],
+            })
+          }
+        />
+      ))}
     </View>
   );
 };
+
+const style = StyleSheet.create({
+  container: {
+    alignItems: "center",
+    marginTop: 20,
+    paddingHorizontal: 10,
+  },
+  locationTitle: {
+    fontSize: 25,
+    fontWeight: "100",
+  },
+});
 
 export default HomeScreen;

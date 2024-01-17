@@ -1,4 +1,4 @@
 export type RootStackParamList = {
     Home: undefined;
-    City: { cityId: string }
+    City: { cityName: string, cityTemperature: string }
 }
