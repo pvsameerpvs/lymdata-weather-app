@@ -1,7 +1,7 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import React, { FC } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import CitySearch from "../components/CitySearch";
+import { StyleSheet, Text, View, Button } from "react-native";
+
 import CityTile from "../components/CityTile";
 import { RootStackParamList } from "../types";
 
@@ -13,8 +13,10 @@ const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
 
   return (
     <View style={style.container}>
-      <CitySearch />
-      <Text style={style.locationTitle}>My Location</Text>
+      <Button
+        title="Add City"
+        onPress={() => navigation.push("SearchCityScreen")}
+      ></Button>
 
       {locations.map((location, index) => (
         <CityTile
