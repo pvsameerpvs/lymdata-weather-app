@@ -10,7 +10,7 @@ type CityScreenProps = StackScreenProps<RootStackParamList, "City">;
 const CityScreen: React.FC<CityScreenProps> = ({
   navigation,
   route: {
-    params: { cityName, cityTemperature },
+    params: { cityName, lat, lon },
   },
 }) => {
   useEffect(
@@ -21,8 +21,10 @@ const CityScreen: React.FC<CityScreenProps> = ({
   return (
     <View style={style.container}>
       <Text style={style.city}>{cityName}</Text>
-      <Text style={style.city}>{cityTemperature}</Text>
-      <NextWeekTemps />
+      <Text style={style.city}>
+        {lat} {lon}
+      </Text>
+      <NextWeekTemps lat={lat} lon={lon} />
     </View>
   );
 };

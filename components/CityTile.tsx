@@ -1,19 +1,23 @@
 import React from "react";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
+import useCurrentWeather from "../swr/use-current-weather";
 
 interface CityTileProps {
   city: string;
-  degree: string;
+  lat: number;
+  lon: number;
   onPress?: () => void;
 }
 
-const CityTile: React.FC<CityTileProps> = ({ city, degree, onPress }) => {
+const CityTile: React.FC<CityTileProps> = ({ city, lat, lon, onPress }) => {
+  const { data } = useCurrentWeather(lat, lon);
+
+  const temperature = data?.main?.temp || "N/A";
+
   return (
     <TouchableOpacity style={style.card} onPress={onPress}>
-      <View>
-        <Text style={style.currentLocation}>{city}</Text>
-        <Text style={style.degrees}>{degree}</Text>
-      </View>
+      <Text style={style.currentLocation}>{city}</Text>
+      <Text style={style.degrees}>{temperature}°C</Text>
     </TouchableOpacity>
   );
 };

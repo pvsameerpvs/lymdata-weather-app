@@ -4,12 +4,12 @@ import { StyleSheet, Text, View, Button } from "react-native";
 
 import CityTile from "../components/CityTile";
 import { RootStackParamList } from "../types";
+import { useCityStore } from "../providers/city-provider";
 
 type HomeScreenProps = StackScreenProps<RootStackParamList, "Home">;
 
 const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
-  const locations = ["Kondotty", "New Delhi", "London"];
-  const degrees = ["12°", " 19°", "2°"];
+  const { cities } = useCityStore();
 
   return (
     <View style={style.container}>
@@ -18,15 +18,17 @@ const HomeScreen: FC<HomeScreenProps> = ({ navigation }) => {
         onPress={() => navigation.push("SearchCityScreen")}
       ></Button>
 
-      {locations.map((location, index) => (
+      {cities.map((city, index) => (
         <CityTile
           key={index}
-          city={location}
-          degree={degrees[index]}
+          city={city.cityName}
+          lat={city.lat}
+          lon={city.lon}
           onPress={() =>
             navigation.push("City", {
-              cityName: location,
-              cityTemperature: degrees[index],
+              cityName: city.cityName,
+              lat: city.lat,
+              lon: city.lon,
             })
           }
         />

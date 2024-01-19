@@ -1,5 +1,5 @@
 export type RootStackParamList = {
     Home: undefined;
-    City: { cityName: string, cityTemperature: string }
+    City: { cityName: string, lat: number; lon: number; }
     SearchCityScreen:undefined;
 }
