@@ -1,4 +1,11 @@
-import { ReactNode, createContext, useContext, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type City = {
   cityName: string;
@@ -12,14 +19,37 @@ type CityContextValue = {
   removeCity: (city: City) => void;
 };
 
+const CITY_STORAGE_KEY = "@cities";
 const CityContext = createContext<CityContextValue | null>(null);
 
 const CityProvider = (props: { children: ReactNode }) => {
   const [cities, setCities] = useState<City[]>([]);
 
-  const addCity = (city: City) => setCities((prev) => [...prev, city]);
+  const addCity = (city: City) => updateCities([...cities, city]);
   const removeCity = (city: City) =>
-    setCities((prev) => prev.filter((x) => x.cityName !== city.cityName));
+    updateCities(cities.filter((x) => x.cityName !== city.cityName));
+
+  const updateCities = (cities: City[]) => {
+    setCities(cities);
+    saveCities(cities);
+  };
+
+  const loadCities = async () => {
+    try {
+      const _cities = await AsyncStorage.getItem(CITY_STORAGE_KEY);
+      setCities(JSON.parse(_cities ?? "[]"));
+    } catch {}
+  };
+
+  const saveCities = async (cities: City[]) => {
+    try {
+      await AsyncStorage.setItem(CITY_STORAGE_KEY, JSON.stringify(cities));
+    } catch {}
+  };
+
+  useEffect(() => {
+    loadCities();
+  }, []);
 
   return (
     <CityContext.Provider
